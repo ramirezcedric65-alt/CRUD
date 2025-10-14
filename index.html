@@ -1352,6 +1352,33 @@
             this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
         });
 
+        // Validación para marca de cigarros (solo letras y espacios)
+        document.getElementById('marca').addEventListener('keydown', function(e) {
+            // Permitir: backspace, delete, tab, escape, enter, espacio
+            if ([46, 8, 9, 27, 13, 32].indexOf(e.keyCode) !== -1 ||
+                // Permitir: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Permitir: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                return;
+            }
+            // Solo permitir letras
+            const char = String.fromCharCode(e.keyCode);
+            if (!/[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(char) && !e.ctrlKey && !e.altKey) {
+                e.preventDefault();
+            }
+        });
+
+        document.getElementById('marca').addEventListener('input', function(e) {
+            // Remover números y caracteres especiales, mantener solo letras y espacios
+            this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            // Evitar múltiples espacios consecutivos
+            this.value = this.value.replace(/\s{2,}/g, ' ');
+        });
+
         // Cerrar modal de compra al hacer clic fuera
         document.getElementById('modalCompra').addEventListener('click', function(e) {
             if (e.target === this) {
