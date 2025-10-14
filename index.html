@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Inventario OXXO</title>
+    <title>Sistema de Gestión de Cigarros</title>
     <style>
         * {
             margin: 0;
@@ -13,146 +13,219 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e52d27 0%, #b31217 100%);
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 1000px;
             overflow: hidden;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header {
-            background: #e52d27;
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
             color: white;
             padding: 30px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 2em;
+            margin-bottom: 10px;
         }
 
         .header p {
-            margin-top: 10px;
             opacity: 0.9;
+            font-size: 1.1em;
         }
 
         .content {
-            padding: 30px;
+            padding: 40px;
         }
 
-        .form-section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            border: 2px solid #e52d27;
-        }
-
-        .form-section h2 {
-            color: #e52d27;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
         }
 
         .form-group {
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 25px;
         }
 
         .form-group label {
-            margin-bottom: 5px;
-            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
             color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
         }
 
         .form-group input,
-        .form-group select {
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: inherit;
         }
 
         .form-group input:focus,
-        .form-group select:focus {
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
-            border-color: #e52d27;
+            border-color: #DC143C;
+            box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
         }
 
         .btn {
-            padding: 12px 30px;
+            width: 100%;
+            padding: 14px;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn-primary {
-            background: #e52d27;
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
             color: white;
         }
 
         .btn-primary:hover {
-            background: #b31217;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(229, 45, 39, 0.3);
+            box-shadow: 0 10px 20px rgba(220, 20, 60, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #B22222 0%, #FF6347 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(178, 34, 34, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #CD5C5C 0%, #F08080 100%);
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            margin-right: 5px;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(205, 92, 92, 0.4);
         }
 
         .btn-secondary {
-            background: #6c757d;
+            background: linear-gradient(135deg, #696969 0%, #808080 100%);
             color: white;
-            margin-left: 10px;
+            margin-top: 10px;
         }
 
         .btn-secondary:hover {
-            background: #545b62;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(105, 105, 105, 0.4);
         }
 
-        .btn-edit {
-            background: #ffc107;
-            color: #333;
-            padding: 6px 12px;
-            font-size: 14px;
-        }
-
-        .btn-edit:hover {
-            background: #e0a800;
-        }
-
-        .btn-delete {
-            background: #dc3545;
+        .welcome-banner {
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
             color: white;
-            padding: 6px 12px;
-            font-size: 14px;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
-        .btn-delete:hover {
-            background: #c82333;
+        .welcome-banner h2 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
         }
 
-        .table-section {
+        .welcome-banner p {
+            opacity: 0.9;
+        }
+
+        .crud-container {
+            display: none;
+        }
+
+        .crud-container.active {
+            display: block;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-buttons button {
+            flex: 1;
+        }
+
+        .table-container {
             overflow-x: auto;
+            margin-top: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         table {
@@ -162,79 +235,142 @@
         }
 
         thead {
-            background: #e52d27;
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
             color: white;
         }
 
-        th, td {
+        th {
             padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 14px;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tbody tr {
+            transition: background-color 0.3s ease;
         }
 
         tbody tr:hover {
-            background: #f8f9fa;
+            background-color: #FFF5F5;
         }
 
-        .actions {
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
             display: flex;
-            gap: 10px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-header h2 {
+            color: #DC143C;
+            font-size: 1.5em;
         }
 
         .empty-state {
             text-align: center;
-            padding: 40px;
-            color: #6c757d;
+            padding: 60px 20px;
+            color: #999;
         }
 
         .empty-state svg {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             margin-bottom: 20px;
-            opacity: 0.5;
+            opacity: 0.3;
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        .empty-state p {
+            font-size: 1.1em;
         }
 
-        .stat-card {
-            background: linear-gradient(135deg, #e52d27, #b31217);
+        .actions-cell {
+            display: flex;
+            gap: 5px;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
             color: white;
-            padding: 20px;
+            border: none;
+            padding: 10px 20px;
             border-radius: 10px;
-            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
         }
 
-        .stat-card h3 {
-            font-size: 2em;
-            margin-bottom: 5px;
-        }
-
-        .stat-card p {
-            opacity: 0.9;
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
         }
 
         @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
+            .content {
+                padding: 20px;
             }
 
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .actions {
+            .action-buttons {
                 flex-direction: column;
+            }
+
+            .actions-cell {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px;
             }
         }
     </style>
@@ -242,236 +378,1003 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏪 OXXO</h1>
-            <p>Sistema de Gestión de Inventario</p>
+            <h1>🚬 Sistema de Gestión</h1>
+            <p>Control y administración de cigarros</p>
         </div>
 
         <div class="content">
-            <div class="stats">
-                <div class="stat-card">
-                    <h3 id="totalProducts">0</h3>
-                    <p>Total Productos</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="totalValue">$0</h3>
-                    <p>Valor Inventario</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="lowStock">0</h3>
-                    <p>Stock Bajo</p>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h2 id="formTitle">➕ Agregar Producto</h2>
-                <form id="productForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="productName">Nombre del Producto</label>
-                            <input type="text" id="productName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Categoría</label>
-                            <select id="category" required>
-                                <option value="">Seleccionar...</option>
-                                <option value="Bebidas">Bebidas</option>
-                                <option value="Snacks">Snacks</option>
-                                <option value="Lácteos">Lácteos</option>
-                                <option value="Panadería">Panadería</option>
-                                <option value="Abarrotes">Abarrotes</option>
-                                <option value="Higiene">Higiene</option>
-                                <option value="Otros">Otros</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Precio</label>
-                            <input type="number" id="price" step="0.01" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="stock">Stock</label>
-                            <input type="number" id="stock" min="0" required>
-                        </div>
+            <!-- Login Form -->
+            <div id="loginSection" class="login-form">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <input type="text" id="username" autocomplete="off">
+                        <div class="error-message" id="usernameError"></div>
                     </div>
-                    <div>
-                        <button type="submit" class="btn btn-primary" id="submitBtn">Agregar Producto</button>
-                        <button type="button" class="btn btn-secondary" id="cancelBtn" style="display: none;">Cancelar</button>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="password" autocomplete="off">
+                        <div class="error-message" id="passwordError"></div>
                     </div>
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                    <div class="error-message" id="loginError" style="margin-top: 15px; text-align: center;"></div>
                 </form>
             </div>
 
-            <div class="table-section">
-                <h2 style="margin-bottom: 20px; color: #e52d27;">📦 Inventario</h2>
-                <table id="productsTable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Producto</th>
-                            <th>Categoría</th>
-                            <th>Precio</th>
-                            <th>Stock</th>
-                            <th>Valor Total</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                    </tbody>
-                </table>
-                <div id="emptyState" class="empty-state">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                    </svg>
-                    <h3>No hay productos en el inventario</h3>
-                    <p>Agrega tu primer producto usando el formulario de arriba</p>
+            <!-- CRUD Section -->
+            <div id="crudSection" class="crud-container">
+                <div class="welcome-banner">
+                    <h2 id="welcomeMessage"></h2>
+                    <p id="roleDescription"></p>
                 </div>
+
+                <div id="adminControls">
+                    <div class="action-buttons">
+                        <button class="btn btn-success" onclick="openModal()">➕ Agregar Cigarro</button>
+                        <button class="btn btn-primary" onclick="openModalUsuarios()" id="btnGestionUsuarios">👥 Gestión de Usuarios</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="cigarrosTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Marca</th>
+                                <th>Tipo</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Descripción</th>
+                                <th id="actionsHeader">Acciones</th>
+                                <th id="buyHeader" style="display: none;">Comprar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cigarrosBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="logout-btn" onclick="logout()">🚪 Cerrar Sesión</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Agregar Cigarro</h2>
+            </div>
+            <form id="cigarroForm">
+                <input type="hidden" id="cigarroId">
+                <div class="form-group">
+                    <label>Marca *</label>
+                    <input type="text" id="marca" maxlength="50">
+                    <div class="error-message" id="marcaError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Tipo *</label>
+                    <select id="tipo">
+                        <option value="">Seleccione un tipo</option>
+                        <option value="Regular">Regular</option>
+                        <option value="Mentolado">Mentolado</option>
+                        <option value="Light">Light</option>
+                        <option value="Premium">Premium</option>
+                    </select>
+                    <div class="error-message" id="tipoError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Precio *</label>
+                    <input type="text" id="precio" placeholder="0.00" inputmode="decimal">
+                    <div class="error-message" id="precioError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Stock *</label>
+                    <input type="text" id="stock" placeholder="0" inputmode="numeric">
+                    <div class="error-message" id="stockError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="descripcion" maxlength="200"></textarea>
+                    <div class="error-message" id="descripcionError"></div>
+                </div>
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Compra -->
+    <div id="modalCompra" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🛒 Realizar Compra</h2>
+            </div>
+            <div id="compraDetalle" style="background: #FFF5F5; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: #8B0000; margin-bottom: 15px;">Detalles del Producto</h3>
+                <p><strong>Marca:</strong> <span id="compraMarca"></span></p>
+                <p><strong>Tipo:</strong> <span id="compraTipo"></span></p>
+                <p><strong>Precio Unitario:</strong> $<span id="compraPrecioUnit"></span></p>
+                <p><strong>Stock Disponible:</strong> <span id="compraStockDisp"></span> unidades</p>
+            </div>
+            <form id="compraForm">
+                <input type="hidden" id="compraCigarroId">
+                <div class="form-group">
+                    <label>Cantidad a Comprar *</label>
+                    <input type="text" id="compraCantidad" placeholder="0" inputmode="numeric">
+                    <div class="error-message" id="compraCantidadError"></div>
+                </div>
+                <div class="form-group" style="background: #F0F0F0; padding: 15px; border-radius: 10px;">
+                    <h3 style="color: #8B0000; margin-bottom: 10px;">Resumen de Compra</h3>
+                    <p><strong>Precio por Unidad:</strong> $<span id="resumenPrecioUnit">0.00</span></p>
+                    <p><strong>Cantidad:</strong> <span id="resumenCantidad">0</span> unidades</p>
+                    <hr style="margin: 10px 0; border: none; border-top: 2px solid #DDD;">
+                    <p style="font-size: 1.2em;"><strong>Total a Pagar:</strong> <span style="color: #8B0000; font-size: 1.3em;">$<span id="resumenTotal">0.00</span></span></p>
+                </div>
+                <button type="submit" class="btn btn-success">✅ Confirmar Compra</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModalCompra()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Gestión de Usuarios -->
+    <div id="modalUsuarios" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h2>👥 Gestión de Usuarios</h2>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <button class="btn btn-success" onclick="openModalAgregarUsuario()">➕ Agregar Usuario</button>
+            </div>
+
+            <div style="background: #FFF5F5; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: #8B0000; margin-bottom: 10px;">📊 Límites de Usuarios</h3>
+                <p><strong>Administradores:</strong> <span id="countAdmins">1</span> / 3</p>
+                <p><strong>Secretarios:</strong> <span id="countSecretarios">1</span> / 5</p>
+                <p><strong>Usuarios:</strong> <span id="countUsuarios">2</span> / 50</p>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usuariosBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="button" class="btn btn-secondary" onclick="closeModalUsuarios()">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Usuario -->
+    <div id="modalAgregarUsuario" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="tituloUsuarioModal">➕ Agregar Usuario</h2>
+            </div>
+            <form id="usuarioForm">
+                <input type="hidden" id="usuarioEditIndex">
+                <div class="form-group">
+                    <label>Nombre de Usuario *</label>
+                    <input type="text" id="nuevoUsername" maxlength="20" autocomplete="off">
+                    <div class="error-message" id="nuevoUsernameError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña *</label>
+                    <input type="password" id="nuevoPassword" maxlength="20" autocomplete="off">
+                    <div class="error-message" id="nuevoPasswordError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Confirmar Contraseña *</label>
+                    <input type="password" id="confirmarPassword" maxlength="20" autocomplete="off">
+                    <div class="error-message" id="confirmarPasswordError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Rol *</label>
+                    <select id="nuevoRole">
+                        <option value="">Seleccione un rol</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Secretario">Secretario</option>
+                        <option value="Usuario">Usuario</option>
+                    </select>
+                    <div class="error-message" id="nuevoRoleError"></div>
+                </div>
+                <button type="submit" class="btn btn-success">Guardar Usuario</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModalAgregarUsuario()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        let products = [];
+        // Base de datos en memoria
+        let users = [
+            { username: 'cedric', password: 'admin123', role: 'Administrador' },
+            { username: 'jacqueline', password: 'user123', role: 'Usuario' },
+            { username: 'lila', password: 'user456', role: 'Usuario' },
+            { username: 'edgar', password: 'sec789', role: 'Secretario' }
+        ];
+
+        const MAX_ADMINS = 3;
+        const MAX_SECRETARIOS = 5;
+        const MAX_USUARIOS = 50;
+
+        let cigarros = [
+            { id: 1, marca: 'Marlboro', tipo: 'Regular', precio: 65.50, stock: 150, descripcion: 'Cigarros de alta calidad' },
+            { id: 2, marca: 'Camel', tipo: 'Light', precio: 58.00, stock: 200, descripcion: 'Suaves y ligeros' },
+            { id: 3, marca: 'Lucky Strike', tipo: 'Premium', precio: 72.00, stock: 100, descripcion: 'Edición especial' }
+        ];
+
+        let currentUser = null;
         let editingId = null;
+        let nextId = 4;
+        let compraData = null;
+        let editingUserIndex = null;
 
-        // Cargar productos del almacenamiento al iniciar
-        window.addEventListener('DOMContentLoaded', () => {
-            loadProducts();
-            renderTable();
-            updateStats();
-        });
-
-        // Guardar productos en memoria
-        function saveProducts() {
-            // En esta versión, los productos solo se mantienen en la variable
-            // Si se recarga la página, se pierden los datos
-        }
-
-        // Cargar productos (en este caso, iniciamos con algunos ejemplos)
-        function loadProducts() {
-            if (products.length === 0) {
-                products = [
-                    { id: 1, name: 'Coca-Cola 600ml', category: 'Bebidas', price: 15.50, stock: 50 },
-                    { id: 2, name: 'Sabritas Originales', category: 'Snacks', price: 18.00, stock: 30 },
-                    { id: 3, name: 'Pan Bimbo Blanco', category: 'Panadería', price: 35.00, stock: 15 }
-                ];
+        // Función para validar texto (sin espacios en blanco al inicio/fin, sin caracteres especiales peligrosos)
+        function validateText(text, fieldName, required = true, minLength = 1, maxLength = 50) {
+            const errors = [];
+            
+            if (required && (!text || text.trim() === '')) {
+                return `El campo ${fieldName} es obligatorio`;
             }
+            
+            if (!required && !text) {
+                return null;
+            }
+
+            const trimmedText = text.trim();
+            
+            if (trimmedText !== text) {
+                return `El campo ${fieldName} no debe tener espacios al inicio o al final`;
+            }
+            
+            if (trimmedText.length < minLength) {
+                return `El campo ${fieldName} debe tener al menos ${minLength} caracteres`;
+            }
+            
+            if (trimmedText.length > maxLength) {
+                return `El campo ${fieldName} no debe exceder ${maxLength} caracteres`;
+            }
+            
+            // Validar caracteres especiales peligrosos
+            const dangerousChars = /[<>{}[\]\\\/]/;
+            if (dangerousChars.test(trimmedText)) {
+                return `El campo ${fieldName} contiene caracteres no permitidos`;
+            }
+            
+            // Validar múltiples espacios consecutivos
+            if (/\s{2,}/.test(trimmedText)) {
+                return `El campo ${fieldName} no debe contener múltiples espacios consecutivos`;
+            }
+            
+            return null;
         }
 
-        // Obtener el siguiente ID
-        function getNextId() {
-            return products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-        }
-
-        // Manejar el envío del formulario
-        document.getElementById('productForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const name = document.getElementById('productName').value;
-            const category = document.getElementById('category').value;
-            const price = parseFloat(document.getElementById('price').value);
-            const stock = parseInt(document.getElementById('stock').value);
-
-            if (editingId !== null) {
-                // Actualizar producto existente
-                const index = products.findIndex(p => p.id === editingId);
-                products[index] = { id: editingId, name, category, price, stock };
-                editingId = null;
-                document.getElementById('formTitle').textContent = '➕ Agregar Producto';
-                document.getElementById('submitBtn').textContent = 'Agregar Producto';
-                document.getElementById('cancelBtn').style.display = 'none';
+        // Función para validar números
+        function validateNumber(value, fieldName, min = 0, max = 999999, allowDecimals = false) {
+            if (!value || value.trim() === '') {
+                return `El campo ${fieldName} es obligatorio`;
+            }
+            
+            const trimmedValue = value.trim();
+            
+            if (allowDecimals) {
+                if (!/^\d+(\.\d{1,2})?$/.test(trimmedValue)) {
+                    return `El campo ${fieldName} debe ser un número válido (máximo 2 decimales)`;
+                }
             } else {
-                // Agregar nuevo producto
-                const newProduct = {
-                    id: getNextId(),
-                    name,
-                    category,
-                    price,
-                    stock
-                };
-                products.push(newProduct);
+                if (!/^\d+$/.test(trimmedValue)) {
+                    return `El campo ${fieldName} debe ser un número entero`;
+                }
             }
+            
+            const numValue = parseFloat(trimmedValue);
+            
+            if (numValue < min) {
+                return `El campo ${fieldName} debe ser mayor o igual a ${min}`;
+            }
+            
+            if (numValue > max) {
+                return `El campo ${fieldName} no debe exceder ${max}`;
+            }
+            
+            return null;
+        }
 
-            saveProducts();
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Limpiar errores
+            clearError('usernameError');
+            clearError('passwordError');
+            clearError('loginError');
+            
+            let hasError = false;
+            
+            // Validar usuario
+            const usernameValidation = validateText(username, 'Usuario', true, 3, 20);
+            if (usernameValidation) {
+                showError('usernameError', usernameValidation);
+                hasError = true;
+            }
+            
+            // Validar contraseña
+            const passwordValidation = validateText(password, 'Contraseña', true, 6, 20);
+            if (passwordValidation) {
+                showError('passwordError', passwordValidation);
+                hasError = true;
+            }
+            
+            if (hasError) return;
+            
+            // Buscar usuario
+            const user = users.find(u => u.username.toLowerCase() === username.toLowerCase().trim() && u.password === password.trim());
+            
+            if (user) {
+                currentUser = user;
+                showCrudSection();
+            } else {
+                showError('loginError', '❌ Credenciales inválidas. Verifica tu usuario y contraseña.');
+            }
+        });
+
+        function showCrudSection() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('crudSection').classList.add('active');
+            
+            document.getElementById('welcomeMessage').textContent = `¡Bienvenido, ${currentUser.role}!`;
+            document.getElementById('roleDescription').textContent = `Usuario: ${currentUser.username}`;
+            
+            // Configurar permisos según el rol
+            if (currentUser.role === 'Usuario') {
+                document.getElementById('adminControls').style.display = 'none';
+                document.getElementById('actionsHeader').style.display = 'none';
+                document.getElementById('buyHeader').style.display = 'table-cell';
+            } else {
+                document.getElementById('adminControls').style.display = 'block';
+                document.getElementById('actionsHeader').style.display = 'table-cell';
+                document.getElementById('buyHeader').style.display = 'none';
+                
+                // Solo administrador puede gestionar usuarios
+                const btnGestion = document.getElementById('btnGestionUsuarios');
+                if (currentUser.role === 'Administrador') {
+                    btnGestion.style.display = 'inline-block';
+                } else {
+                    btnGestion.style.display = 'none';
+                }
+            }
+            
             renderTable();
-            updateStats();
-            document.getElementById('productForm').reset();
-        });
+        }
 
-        // Cancelar edición
-        document.getElementById('cancelBtn').addEventListener('click', () => {
+        function logout() {
+            currentUser = null;
             editingId = null;
-            document.getElementById('formTitle').textContent = '➕ Agregar Producto';
-            document.getElementById('submitBtn').textContent = 'Agregar Producto';
-            document.getElementById('cancelBtn').style.display = 'none';
-            document.getElementById('productForm').reset();
-        });
-
-        // Editar producto
-        function editProduct(id) {
-            const product = products.find(p => p.id === id);
-            if (product) {
-                editingId = id;
-                document.getElementById('productName').value = product.name;
-                document.getElementById('category').value = product.category;
-                document.getElementById('price').value = product.price;
-                document.getElementById('stock').value = product.stock;
-                document.getElementById('formTitle').textContent = '✏️ Editar Producto';
-                document.getElementById('submitBtn').textContent = 'Actualizar Producto';
-                document.getElementById('cancelBtn').style.display = 'inline-block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            document.getElementById('crudSection').classList.remove('active');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('loginForm').reset();
+            clearAllErrors();
         }
 
-        // Eliminar producto
-        function deleteProduct(id) {
-            if (confirm('¿Estás seguro de eliminar este producto?')) {
-                products = products.filter(p => p.id !== id);
-                saveProducts();
-                renderTable();
-                updateStats();
-            }
-        }
-
-        // Renderizar tabla
         function renderTable() {
-            const tbody = document.getElementById('tableBody');
-            const emptyState = document.getElementById('emptyState');
-
-            if (products.length === 0) {
-                tbody.innerHTML = '';
-                emptyState.style.display = 'block';
+            const tbody = document.getElementById('cigarrosBody');
+            
+            if (cigarros.length === 0) {
+                const colspan = currentUser.role === 'Usuario' ? '8' : '7';
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="${colspan}" class="empty-state">
+                            <p>📦 No hay cigarros registrados</p>
+                        </td>
+                    </tr>
+                `;
                 return;
             }
-
-            emptyState.style.display = 'none';
-            tbody.innerHTML = products.map(product => `
+            
+            tbody.innerHTML = cigarros.map(cigarro => `
                 <tr>
-                    <td>${product.id}</td>
-                    <td>${product.name}</td>
-                    <td>${product.category}</td>
-                    <td>$${product.price.toFixed(2)}</td>
-                    <td style="color: ${product.stock < 10 ? '#dc3545' : '#28a745'}; font-weight: bold;">
-                        ${product.stock} ${product.stock < 10 ? '⚠️' : ''}
+                    <td>${cigarro.id}</td>
+                    <td>${cigarro.marca}</td>
+                    <td>${cigarro.tipo}</td>
+                    <td>${cigarro.precio.toFixed(2)}</td>
+                    <td>${cigarro.stock}</td>
+                    <td>${cigarro.descripcion || 'Sin descripción'}</td>
+                    ${currentUser.role !== 'Usuario' ? `
+                    <td class="actions-cell">
+                        ${currentUser.role === 'Administrador' || currentUser.role === 'Secretario' ? `
+                            <button class="btn btn-warning" onclick="editCigarro(${cigarro.id})">✏️ Editar</button>
+                        ` : ''}
+                        ${currentUser.role === 'Administrador' ? `
+                            <button class="btn btn-danger" onclick="deleteCigarro(${cigarro.id})">🗑️ Eliminar</button>
+                        ` : ''}
                     </td>
-                    <td>$${(product.price * product.stock).toFixed(2)}</td>
+                    ` : `
                     <td>
-                        <div class="actions">
-                            <button class="btn btn-edit" onclick="editProduct(${product.id})">✏️ Editar</button>
-                            <button class="btn btn-delete" onclick="deleteProduct(${product.id})">🗑️ Eliminar</button>
-                        </div>
+                        <button class="btn btn-success" onclick="openModalCompra(${cigarro.id})" ${cigarro.stock === 0 ? 'disabled' : ''}>
+                            ${cigarro.stock === 0 ? '❌ Sin Stock' : '🛒 Comprar'}
+                        </button>
+                    </td>
+                    `}
+                </tr>
+            `).join('');
+        }
+
+        function openModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'Agregar Cigarro';
+            document.getElementById('cigarroForm').reset();
+            document.getElementById('cigarroId').value = '';
+            clearAllErrors();
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            editingId = null;
+            clearAllErrors();
+        }
+
+        function editCigarro(id) {
+            const cigarro = cigarros.find(c => c.id === id);
+            if (!cigarro) return;
+            
+            editingId = id;
+            document.getElementById('modalTitle').textContent = 'Editar Cigarro';
+            document.getElementById('cigarroId').value = cigarro.id;
+            document.getElementById('marca').value = cigarro.marca;
+            document.getElementById('tipo').value = cigarro.tipo;
+            document.getElementById('precio').value = cigarro.precio;
+            document.getElementById('stock').value = cigarro.stock;
+            document.getElementById('descripcion').value = cigarro.descripcion || '';
+            clearAllErrors();
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function deleteCigarro(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar este cigarro?')) {
+                cigarros = cigarros.filter(c => c.id !== id);
+                renderTable();
+            }
+        }
+
+        // Funciones de compra
+        function openModalCompra(id) {
+            const cigarro = cigarros.find(c => c.id === id);
+            if (!cigarro || cigarro.stock === 0) return;
+            
+            compraData = cigarro;
+            
+            document.getElementById('compraCigarroId').value = cigarro.id;
+            document.getElementById('compraMarca').textContent = cigarro.marca;
+            document.getElementById('compraTipo').textContent = cigarro.tipo;
+            document.getElementById('compraPrecioUnit').textContent = cigarro.precio.toFixed(2);
+            document.getElementById('compraStockDisp').textContent = cigarro.stock;
+            document.getElementById('resumenPrecioUnit').textContent = cigarro.precio.toFixed(2);
+            
+            document.getElementById('compraCantidad').value = '';
+            document.getElementById('resumenCantidad').textContent = '0';
+            document.getElementById('resumenTotal').textContent = '0.00';
+            
+            clearAllErrors();
+            document.getElementById('modalCompra').classList.add('active');
+        }
+
+        function closeModalCompra() {
+            document.getElementById('modalCompra').classList.remove('active');
+            compraData = null;
+            clearAllErrors();
+        }
+
+        // Actualizar resumen en tiempo real
+        document.getElementById('compraCantidad').addEventListener('input', function() {
+            const cantidad = parseInt(this.value) || 0;
+            const precioUnit = compraData ? compraData.precio : 0;
+            const total = cantidad * precioUnit;
+            
+            document.getElementById('resumenCantidad').textContent = cantidad;
+            document.getElementById('resumenTotal').textContent = total.toFixed(2);
+        });
+
+        document.getElementById('compraForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const cantidad = document.getElementById('compraCantidad').value;
+            
+            clearAllErrors();
+            
+            let hasError = false;
+            
+            // Validar cantidad
+            if (!cantidad || cantidad.trim() === '') {
+                showError('compraCantidadError', 'La cantidad es obligatoria');
+                hasError = true;
+            } else if (!/^\d+$/.test(cantidad.trim())) {
+                showError('compraCantidadError', 'La cantidad debe ser un número entero');
+                hasError = true;
+            } else {
+                const cantidadNum = parseInt(cantidad.trim());
+                
+                if (cantidadNum <= 0) {
+                    showError('compraCantidadError', 'La cantidad debe ser mayor a 0');
+                    hasError = true;
+                } else if (cantidadNum > compraData.stock) {
+                    showError('compraCantidadError', `Solo hay ${compraData.stock} unidades disponibles`);
+                    hasError = true;
+                } else if (cantidadNum > 9999) {
+                    showError('compraCantidadError', 'La cantidad no puede exceder 9999 unidades');
+                    hasError = true;
+                }
+            }
+            
+            if (hasError) return;
+            
+            // Procesar compra
+            const cantidadCompra = parseInt(cantidad.trim());
+            const total = cantidadCompra * compraData.precio;
+            
+            // Actualizar stock
+            const cigarroIndex = cigarros.findIndex(c => c.id === compraData.id);
+            if (cigarroIndex !== -1) {
+                cigarros[cigarroIndex].stock -= cantidadCompra;
+            }
+            
+            alert(`✅ ¡Compra realizada con éxito!\n\nProducto: ${compraData.marca}\nCantidad: ${cantidadCompra} unidades\nPrecio por unidad: ${compraData.precio.toFixed(2)}\nTotal pagado: ${total.toFixed(2)}\n\n¡Gracias por su compra!`);
+            
+            closeModalCompra();
+            renderTable();
+        });
+
+        // Gestión de Usuarios
+        function countUsersByRole() {
+            return {
+                admins: users.filter(u => u.role === 'Administrador').length,
+                secretarios: users.filter(u => u.role === 'Secretario').length,
+                usuarios: users.filter(u => u.role === 'Usuario').length
+            };
+        }
+
+        function updateUserCounts() {
+            const counts = countUsersByRole();
+            document.getElementById('countAdmins').textContent = counts.admins;
+            document.getElementById('countSecretarios').textContent = counts.secretarios;
+            document.getElementById('countUsuarios').textContent = counts.usuarios;
+        }
+
+        function openModalUsuarios() {
+            updateUserCounts();
+            renderUsuariosTable();
+            document.getElementById('modalUsuarios').classList.add('active');
+        }
+
+        function closeModalUsuarios() {
+            document.getElementById('modalUsuarios').classList.remove('active');
+        }
+
+        function renderUsuariosTable() {
+            const tbody = document.getElementById('usuariosBody');
+            
+            tbody.innerHTML = users.map((user, index) => `
+                <tr>
+                    <td>${user.username}</td>
+                    <td>${user.role}</td>
+                    <td class="actions-cell">
+                        ${user.role === 'Secretario' ? `
+                            <button class="btn btn-success" style="padding: 8px 16px; font-size: 0.9em;" onclick="ascenderSecretario(${index})">⬆️ Ascender</button>
+                        ` : ''}
+                        ${user.role === 'Administrador' && user.username !== currentUser.username ? `
+                            <button class="btn btn-warning" style="padding: 8px 16px; font-size: 0.9em;" onclick="descenderAdministrador(${index})">⬇️ Descender</button>
+                        ` : ''}
+                        ${user.username !== currentUser.username ? `
+                            <button class="btn btn-danger" onclick="eliminarUsuario(${index})">🗑️ Eliminar</button>
+                        ` : '<span style="color: #999; font-style: italic;">Usuario actual</span>'}
                     </td>
                 </tr>
             `).join('');
         }
 
-        // Actualizar estadísticas
-        function updateStats() {
-            const totalProducts = products.length;
-            const totalValue = products.reduce((sum, p) => sum + (p.price * p.stock), 0);
-            const lowStock = products.filter(p => p.stock < 10).length;
-
-            document.getElementById('totalProducts').textContent = totalProducts;
-            document.getElementById('totalValue').textContent = `$${totalValue.toFixed(2)}`;
-            document.getElementById('lowStock').textContent = lowStock;
+        function openModalAgregarUsuario() {
+            editingUserIndex = null;
+            document.getElementById('tituloUsuarioModal').textContent = '➕ Agregar Usuario';
+            document.getElementById('usuarioForm').reset();
+            document.getElementById('usuarioEditIndex').value = '';
+            clearAllErrors();
+            document.getElementById('modalAgregarUsuario').classList.add('active');
         }
+
+        function closeModalAgregarUsuario() {
+            document.getElementById('modalAgregarUsuario').classList.remove('active');
+            editingUserIndex = null;
+            clearAllErrors();
+        }
+
+        function ascenderSecretario(index) {
+            const counts = countUsersByRole();
+            
+            if (counts.admins >= MAX_ADMINS) {
+                alert(`⚠️ No se puede ascender\n\nYa se alcanzó el límite máximo de ${MAX_ADMINS} administradores.`);
+                return;
+            }
+
+            const usuario = users[index];
+            
+            if (confirm(`¿Estás seguro de ascender a ${usuario.username} a Administrador?`)) {
+                users[index].role = 'Administrador';
+                
+                // Mensaje de felicitación
+                alert(`🎉 ¡Felicidades ${usuario.username}!\n\nHas sido ascendido a Administrador.\n\nAhora tienes permisos completos en el sistema.`);
+                
+                updateUserCounts();
+                renderUsuariosTable();
+            }
+        }
+
+        function descenderAdministrador(index) {
+            const counts = countUsersByRole();
+            
+            if (counts.secretarios >= MAX_SECRETARIOS) {
+                alert(`⚠️ No se puede descender\n\nYa se alcanzó el límite máximo de ${MAX_SECRETARIOS} secretarios.`);
+                return;
+            }
+
+            const usuario = users[index];
+            
+            if (confirm(`¿Estás seguro de descender a ${usuario.username} a Secretario?`)) {
+                users[index].role = 'Secretario';
+                
+                alert(`📉 ${usuario.username} ha sido descendido a Secretario.`);
+                
+                updateUserCounts();
+                renderUsuariosTable();
+            }
+        }
+
+        function eliminarUsuario(index) {
+            const usuario = users[index];
+            
+            if (confirm(`¿Estás seguro de eliminar al usuario ${usuario.username}?`)) {
+                users.splice(index, 1);
+                alert(`✅ Usuario ${usuario.username} eliminado correctamente.`);
+                updateUserCounts();
+                renderUsuariosTable();
+            }
+        }
+
+        document.getElementById('usuarioForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('nuevoUsername').value;
+            const password = document.getElementById('nuevoPassword').value;
+            const confirmPassword = document.getElementById('confirmarPassword').value;
+            const role = document.getElementById('nuevoRole').value;
+            
+            clearAllErrors();
+            
+            let hasError = false;
+            
+            // Validar username
+            const usernameValidation = validateText(username, 'Nombre de usuario', true, 3, 20);
+            if (usernameValidation) {
+                showError('nuevoUsernameError', usernameValidation);
+                hasError = true;
+            } else {
+                // Validar que no exista el usuario
+                const usernameExists = users.some((u, i) => 
+                    u.username.toLowerCase() === username.toLowerCase().trim() && i !== editingUserIndex
+                );
+                if (usernameExists) {
+                    showError('nuevoUsernameError', 'Este nombre de usuario ya existe');
+                    hasError = true;
+                }
+                
+                // Validar que solo contenga letras y números
+                if (!/^[a-zA-Z0-9]+$/.test(username.trim())) {
+                    showError('nuevoUsernameError', 'El nombre de usuario solo puede contener letras y números');
+                    hasError = true;
+                }
+            }
+            
+            // Validar contraseña
+            const passwordValidation = validateText(password, 'Contraseña', true, 6, 20);
+            if (passwordValidation) {
+                showError('nuevoPasswordError', passwordValidation);
+                hasError = true;
+            } else {
+                // Validar que contenga al menos un número
+                if (!/\d/.test(password.trim())) {
+                    showError('nuevoPasswordError', 'La contraseña debe contener al menos un número');
+                    hasError = true;
+                }
+            }
+            
+            // Validar confirmación de contraseña
+            if (!confirmPassword || confirmPassword.trim() === '') {
+                showError('confirmarPasswordError', 'Debes confirmar la contraseña');
+                hasError = true;
+            } else if (password.trim() !== confirmPassword.trim()) {
+                showError('confirmarPasswordError', 'Las contraseñas no coinciden');
+                hasError = true;
+            }
+            
+            // Validar rol
+            if (!role || role.trim() === '') {
+                showError('nuevoRoleError', 'Debes seleccionar un rol');
+                hasError = true;
+            } else {
+                // Validar límites por rol
+                const counts = countUsersByRole();
+                
+                if (role === 'Administrador' && counts.admins >= MAX_ADMINS) {
+                    showError('nuevoRoleError', `Ya se alcanzó el límite de ${MAX_ADMINS} administradores`);
+                    alert(`⚠️ Límite alcanzado\n\nNo se pueden agregar más administradores.\nLímite máximo: ${MAX_ADMINS}`);
+                    hasError = true;
+                } else if (role === 'Secretario' && counts.secretarios >= MAX_SECRETARIOS) {
+                    showError('nuevoRoleError', `Ya se alcanzó el límite de ${MAX_SECRETARIOS} secretarios`);
+                    alert(`⚠️ Límite alcanzado\n\nNo se pueden agregar más secretarios.\nLímite máximo: ${MAX_SECRETARIOS}`);
+                    hasError = true;
+                } else if (role === 'Usuario' && counts.usuarios >= MAX_USUARIOS) {
+                    showError('nuevoRoleError', `Ya se alcanzó el límite de ${MAX_USUARIOS} usuarios`);
+                    alert(`⚠️ Límite alcanzado\n\nNo se pueden agregar más usuarios.\nLímite máximo: ${MAX_USUARIOS}`);
+                    hasError = true;
+                }
+            }
+            
+            if (hasError) return;
+            
+            // Agregar usuario
+            const nuevoUsuario = {
+                username: username.trim(),
+                password: password.trim(),
+                role: role
+            };
+            
+            users.push(nuevoUsuario);
+            
+            alert(`✅ Usuario creado exitosamente\n\nUsuario: ${nuevoUsuario.username}\nRol: ${nuevoUsuario.role}`);
+            
+            closeModalAgregarUsuario();
+            updateUserCounts();
+            renderUsuariosTable();
+        });
+
+        document.getElementById('cigarroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const marca = document.getElementById('marca').value;
+            const tipo = document.getElementById('tipo').value;
+            const precio = document.getElementById('precio').value;
+            const stock = document.getElementById('stock').value;
+            const descripcion = document.getElementById('descripcion').value;
+            
+            // Limpiar errores
+            clearAllErrors();
+            
+            let hasError = false;
+            
+            // Validar marca
+            const marcaValidation = validateText(marca, 'Marca', true, 2, 50);
+            if (marcaValidation) {
+                showError('marcaError', marcaValidation);
+                hasError = true;
+            }
+            
+            // Validar tipo
+            if (!tipo || tipo.trim() === '') {
+                showError('tipoError', 'Debes seleccionar un tipo');
+                hasError = true;
+            }
+            
+            // Validar precio
+            const precioValidation = validateNumber(precio, 'Precio', 0.01, 99999.99, true);
+            if (precioValidation) {
+                showError('precioError', precioValidation);
+                hasError = true;
+            }
+            
+            // Validar stock
+            const stockValidation = validateNumber(stock, 'Stock', 0, 999999, false);
+            if (stockValidation) {
+                showError('stockError', stockValidation);
+                hasError = true;
+            }
+            
+            // Validar descripción (opcional)
+            if (descripcion && descripcion.trim() !== '') {
+                const descripcionValidation = validateText(descripcion, 'Descripción', false, 1, 200);
+                if (descripcionValidation) {
+                    showError('descripcionError', descripcionValidation);
+                    hasError = true;
+                }
+            }
+            
+            if (hasError) return;
+            
+            // Guardar cigarro
+            const cigarroData = {
+                marca: marca.trim(),
+                tipo: tipo.trim(),
+                precio: parseFloat(precio.trim()),
+                stock: parseInt(stock.trim()),
+                descripcion: descripcion.trim()
+            };
+            
+            if (editingId) {
+                const index = cigarros.findIndex(c => c.id === editingId);
+                if (index !== -1) {
+                    cigarros[index] = { ...cigarros[index], ...cigarroData };
+                }
+            } else {
+                cigarros.push({ id: nextId++, ...cigarroData });
+            }
+            
+            renderTable();
+            closeModal();
+        });
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+
+        function clearError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = '';
+            errorElement.classList.remove('show');
+        }
+
+        function clearAllErrors() {
+            const errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(el => {
+                el.textContent = '';
+                el.classList.remove('show');
+            });
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Prevenir escritura de letras en campos numéricos
+        document.getElementById('precio').addEventListener('keydown', function(e) {
+            // Permitir: backspace, delete, tab, escape, enter
+            if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                // Permitir: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Permitir: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                return;
+            }
+            // Permitir: punto decimal (solo uno)
+            if (e.key === '.' && this.value.indexOf('.') === -1) {
+                return;
+            }
+            // Prevenir si no es número
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        document.getElementById('precio').addEventListener('input', function(e) {
+            // Remover cualquier carácter que no sea número o punto
+            this.value = this.value.replace(/[^0-9.]/g, '');
+            // Asegurar solo un punto decimal
+            const parts = this.value.split('.');
+            if (parts.length > 2) {
+                this.value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            // Limitar a 2 decimales
+            if (parts[1] && parts[1].length > 2) {
+                this.value = parts[0] + '.' + parts[1].substring(0, 2);
+            }
+        });
+
+        document.getElementById('stock').addEventListener('keydown', function(e) {
+            // Permitir: backspace, delete, tab, escape, enter
+            if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                // Permitir: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Permitir: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                return;
+            }
+            // Prevenir si no es número
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        document.getElementById('stock').addEventListener('input', function(e) {
+            // Remover cualquier carácter que no sea número
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Validación para campo de cantidad en compras
+        document.getElementById('compraCantidad').addEventListener('keydown', function(e) {
+            // Permitir: backspace, delete, tab, escape, enter
+            if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                // Permitir: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Permitir: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                return;
+            }
+            // Prevenir si no es número
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        // Validación para nombre de usuario (solo letras y números)
+        document.getElementById('nuevoUsername').addEventListener('keydown', function(e) {
+            // Permitir: backspace, delete, tab, escape, enter
+            if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                // Permitir: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Permitir: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                return;
+            }
+            // Solo permitir letras y números
+            const char = String.fromCharCode(e.keyCode);
+            if (!/[a-zA-Z0-9]/.test(char) && !e.ctrlKey && !e.altKey) {
+                e.preventDefault();
+            }
+        });
+
+        document.getElementById('nuevoUsername').addEventListener('input', function(e) {
+            // Remover cualquier carácter que no sea letra o número
+            this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+        });
+
+        // Cerrar modal de compra al hacer clic fuera
+        document.getElementById('modalCompra').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModalCompra();
+            }
+        });
+
+        // Cerrar modal de usuarios al hacer clic fuera
+        document.getElementById('modalUsuarios').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModalUsuarios();
+            }
+        });
+
+        // Cerrar modal de agregar usuario al hacer clic fuera
+        document.getElementById('modalAgregarUsuario').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModalAgregarUsuario();
+            }
+        });
+
+        // Inicializar
+        renderTable();
     </script>
 </body>
 </html>
